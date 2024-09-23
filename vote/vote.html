@@ -1,0 +1,37 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AJAX 투표</title>
+
+    <script>
+        function getVote(int) {
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", "vote.php?vote=" + int, true);
+            xhr.send();
+
+            xhr.onload = function () {
+                if (this.status == 200) {
+                    document.getElementById('vote').innerHTML = this.responseText;
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="vote">
+        <h3>Are you a developer?</h3>
+        <form action="">
+            Yes: <input type="radio" name="vote" value="0" onclick="getVote(this.value)"><br>
+            No: <input type="radio" name="vote" value="1" onclick="getVote(this.value)">
+        </form>
+    </div>
+</body>
+
+</html>

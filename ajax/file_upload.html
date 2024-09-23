@@ -1,0 +1,62 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AJAX POST 전송</title>
+
+    <style>
+        #dis {
+            margin-top: 30px;
+            width: 300px;
+        }
+
+        #dis img {
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+<form id="upload_form" action="" method="post" enctype="multipart/form-data">
+    <input type="file" name="photo[]" multiple>
+    <input type="button" value="확인" id="upload_btn">
+</form>
+<div id="dis"></div>
+
+<script>
+    const upload_btn = document.querySelector('#upload_btn');
+    upload_btn.addEventListener('click', () => {
+        const upload_form = document.querySelector('#upload_form');
+        const form_data = new FormData(upload_form);
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "./file_upload.php", true);
+        xhr.send(form_data);
+
+        xhr.onload = () => {
+            if (xhr.status == 200) {
+                const data = JSON.parse(xhr.responseText);
+                console.log(data.result);
+                if (data.result == 'success') {
+                    if (data.img.indexOf('|') != -1) {
+                        const imgs = data.img.split('|');
+                        for (let img of imgs) {
+                            dis.innerHTML += '<img src="' + img + '">';
+                        }
+                    } else {
+                        const dis = document.querySelector('#dis');
+                        dis.innerHTML = '<img src="' + data.img + '">';
+                    }
+                }
+            }
+        }
+    });
+</script>
+</body>
+
+</html>

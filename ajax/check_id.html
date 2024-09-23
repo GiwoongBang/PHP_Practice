@@ -1,0 +1,54 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ID 중복 체크</title>
+</head>
+
+<body>
+    <form action="">
+        <input type="text" name="user_id" id="user_id" placeholder="input ID">
+        <input type="button" value="중복 확인" id="ajax_btn">
+        <p>
+            <span id="msg">아이디는 대/소문자 구분없이 12자 이내로 입력해 주세요.</span>
+        </p>
+    </form>
+
+<script>
+    const ajax_btn = document.querySelector('#ajax_btn');
+    ajax_btn.addEventListener('click', () => {
+        const user_id = document.querySelector('#user_id');
+        const span_msg = document.querySelector('#msg');
+
+        if (user_id.value.trim() === '') {
+            span_msg.textContent = "ID 입력을 확인해 주세요.";
+            return;
+        }
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "./check_id.php?user_id=" + user_id.value, true);
+        xhr.send();
+        xhr.onload = () => {
+            if (xhr.status == 200) {
+                const obj = JSON.parse(xhr.response);
+                if (obj.result == "exist") {
+                    span_msg.textContent = "이미 사용중인 ID 입니다.";
+                    user_id.value = '';
+                } else {
+                    span_msg.textContent = "사용 가능한 ID 입니다.";
+                }
+            } else {
+                console.log(xhr.status);
+            }
+        }
+
+    });
+</script>
+</body>
+
+</html>

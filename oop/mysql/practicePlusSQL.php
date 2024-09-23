@@ -1,0 +1,10 @@
+// create DB
+CREATE DATABASE practicePlus;
+
+CREATE TABLE board (
+idx INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+subject VARCHAR(255) DEFAULT '' COMMENT '게시물 제목',
+content TEXT COMMENT '게시물 내용',
+rdate DATETIME,
+PRIMARY KEY(idx)
+);
